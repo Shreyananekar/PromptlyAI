@@ -25,38 +25,27 @@ router.get("/threads", async (req, res) => {
   res.json(threads);
 });
 
-router.get("/thread/:threadId", async(req, res) => {
-    const {threadId} = req.params;
-
+router.get("/threads/:threadId", async (req, res) => {
+    const { threadId } = req.params;
     try {
-        const thread = await Thread.findOne({threadId});
-
-        if(!thread) {
-            return res.status(404).json({error: "Thread not found"});
-        }
-
-        
-    } catch(err) {
+        const thread = await Thread.findOne({ threadId });
+        if (!thread) return res.status(404).json({ error: "Thread not found" });
+        res.status(200).json(thread);
+    } catch (err) {
         console.log(err);
-        res.status(500).json({error: "Failed to fetch chat"});
+        res.status(500).json({ error: "Failed to fetch chat" });
     }
 });
 
-router.delete("/thread/:threadId", async (req, res) => {
-    const {threadId} = req.params;
-
+router.delete("/threads/:threadId", async (req, res) => {
+    const { threadId } = req.params;
     try {
-        const deletedThread = await Thread.findOneAndDelete({threadId});
-
-        if(!deletedThread) {
-            res.status(404).json({error: "Thread not found"});
-        }
-
-        res.status(200).json({success : "Thread deleted successfully"});
-
-    } catch(err) {
+        const deletedThread = await Thread.findOneAndDelete({ threadId });
+        if (!deletedThread) return res.status(404).json({ error: "Thread not found" });
+        res.status(200).json({ success: "Thread deleted successfully" });
+    } catch (err) {
         console.log(err);
-        res.status(500).json({error: "Failed to delete thread"});
+        res.status(500).json({ error: "Failed to delete thread" });
     }
 });
 
