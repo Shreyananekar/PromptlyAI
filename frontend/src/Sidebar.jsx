@@ -32,19 +32,20 @@ function Sidebar() {
     }
 
     const changeThread = async (newThreadId) => {
-        setCurrThreadId(newThreadId);
+    setCurrThreadId(newThreadId);
 
-        try {
-            const response = await fetch(`https://promptlyai-9fhz.onrender.com/api/threads/${newThreadId}`);
-            const res = await response.json();
-            console.log(res);
-            setPrevChats(res);
-            setNewChat(false);
-            setReply(null);
-        } catch(err) {
-            console.log(err);
-        }
-    }   
+    try {
+        const response = await fetch(`https://promptlyai-9fhz.onrender.com/api/threads/${newThreadId}`);
+        const res = await response.json();
+
+        setPrevChats(res.messages); 
+        setNewChat(false);
+        setReply(null);
+    } catch(err) {
+        console.log(err);
+    }
+}
+
 
    const deleteThread = async (threadId) => {
     try {
