@@ -26,7 +26,7 @@ function ChatWindow() {
         };
 
         try {
-            const response = await fetch("https://promptlyai-production.up.railway.app/api/chat", options);
+            const response = await fetch("https://promptlyai-9fhz.onrender.com/api/chat", options);
             const res = await response.json();
             console.log(res);
             setReply(res.reply);
