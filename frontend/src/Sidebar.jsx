@@ -46,23 +46,28 @@ function Sidebar() {
         }
     }   
 
-    const deleteThread = async (threadId) => {
-        try {
-            const response = await fetch(`https://promptlyai-9fhz.onrender.com/api/threads/${threadId}`, {method: "DELETE"});
-            const res = await response.json();
-            console.log(res);
+   const deleteThread = async (threadId) => {
+    try {
+        const response = await fetch(
+            `https://promptlyai-9fhz.onrender.com/api/threads/${threadId}`,
+            { method: "DELETE" }
+        );
+        const res = await response.json();
+        console.log(res);
 
-            //updated threads re-render
+        if(res.success) {
             setAllThreads(prev => prev.filter(thread => thread.threadId !== threadId));
 
             if(threadId === currThreadId) {
                 createNewChat();
             }
-
-        } catch(err) {
-            console.log(err);
+        } else {
+            console.log("Thread not deleted:", res.error);
         }
+    } catch(err) {
+        console.log(err);
     }
+}
 
     return (
         <section className="sidebar">
@@ -75,18 +80,20 @@ function Sidebar() {
             <ul className="history">
                 {
                     allThreads?.map((thread, idx) => (
-                        <li key={idx} 
-                            onClick={(e) => changeThread(thread.threadId)}
-                            className={thread.threadId === currThreadId ? "highlighted": " "}
-                        >
-                            {thread.title}
-                            <i className="fa-solid fa-trash"
-                                onClick={(e) => {
-                                    e.stopPropagation(); //stop event bubbling
-                                    deleteThread(thread.threadId);
-                                }}
-                            ></i>
-                        </li>
+                    <li key={thread.threadId} 
+                        onClick={() => changeThread(thread.threadId)}
+                        className={thread.threadId === currThreadId ? "highlighted" : ""}>
+
+                        {thread.title}
+                 <i 
+                     className="fa-solid fa-trash"
+                     onClick={(e) => {
+                     e.stopPropagation(); // Prevent parent li click
+                     deleteThread(thread.threadId);
+                    }}
+                ></i>
+             </li>
+
                     ))
                 }
             </ul>
