@@ -5,7 +5,7 @@ const getHuggingFaceResponse = async (message) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${process.env.HF_API_KEY}`,
+      Authorization: `Bearer ${process.env.HF_API_KEY}`,
     },
     body: JSON.stringify({
       model: "meta-llama/Llama-3.1-8B-Instruct:cerebras",
@@ -26,9 +26,17 @@ const getHuggingFaceResponse = async (message) => {
     );
 
     const data = await response.json();
-    return data.choices[0].message.content;
+
+    console.log("HF RESPONSE:", JSON.stringify(data, null, 2));
+
+    if (!response.ok) {
+      throw new Error(data.error || JSON.stringify(data));
+    }
+
+    return data.choices?.[0]?.message?.content;
   } catch (err) {
-    console.error(err);
+    console.error("HF ERROR:", err);
+    throw err;
   }
 };
 
