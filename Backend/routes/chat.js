@@ -84,9 +84,13 @@ router.post("/chat", async (req, res) => {
 
         res.status(200).json({ reply: assistantReply, threadId: thread.threadId });
     } catch (err) {
-        console.log(err);
-        res.status(500).json({ error: "Something went wrong" });
-    }
+    console.error("CHAT ERROR:", err);
+
+    res.status(500).json({
+        error: err.message,
+        stack: err.stack
+    });
+}
 });
 
 export default router;
