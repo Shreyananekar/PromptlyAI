@@ -8,7 +8,7 @@ const getHuggingFaceResponse = async (message) => {
       Authorization: `Bearer ${process.env.HF_API_KEY}`,
     },
     body: JSON.stringify({
-      model: "meta-llama/Llama-3.1-8B-Instruct:cerebras",
+      model: "Qwen/Qwen2.5-7B-Instruct",
       messages: [
         {
           role: "user",
